@@ -69,6 +69,10 @@
 <body>
 
   <div id="earningPlans"></div>
+  <div class="plan-card">
+  <h3>No More Data</h3>
+  <p>You currently have no active earning plans.</p>
+</div>
 
   <div class="bottom-nav">
     <a href="more.html"><img src="OIP (4).jpeg" alt="Home" /><span>Home</span></a>
@@ -110,7 +114,11 @@
         .get();
 
       if (querySnapshot.empty) {
-        earningPlansDiv.innerHTML = "No active plans found.";
+        earningPlansDiv.innerHTML =
+        <div class="plan-card">
+      <h3>No More Data</h3>
+      <p>You currently have no active earning plans.</p>
+    </div>;
         return;
       }
 
