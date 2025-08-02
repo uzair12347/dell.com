@@ -35,7 +35,7 @@
 
   .plan-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    grid-template-columns: 1fr;
     gap: 16px;
     padding: 0 16px 80px;
     max-width: 1200px;
@@ -116,3 +116,9 @@
     height: 24px;
     margin-bottom: 2px;
   }
+
+  @media (min-width: 600px) {
+  .plan-container {
+    grid-template-columns: repeat(2, 1fr); /* 2 columns on medium+ screen */
+  }
+}
