@@ -1,157 +1,141 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Recharge History</title>
-
-  <!-- Firebase Scripts -->
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
-
   <style>
-    * {
-      box-sizing: border-box;
-    }
-
     body {
-      background: #f9f9f9;
+      background-color: #000;
       color: #fff;
       font-family: Arial, sans-serif;
-      text-align: center;
       padding: 20px;
     }
 
     h1 {
-      font-size: 28px;
-      margin-bottom: 20px;
-        background-color:#000000;
-
-    }
-
-    .table-container {
-      overflow-x: auto;
-      margin: auto;
-      max-width: 100%;
+      text-align: center;
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
-      min-width: 600px;
+      margin-top: 20px;
     }
 
     th, td {
-      padding: 12px;
       border: 1px solid #444;
+      padding: 10px;
       text-align: center;
     }
 
     th {
-        background-color:#007DB8;
-
+      background-color: #111;
     }
 
-    tr:nth-child(even) {
-     background-color:#007DB8;
+    .badge {
+      padding: 5px 10px;
+      border-radius: 5px;
+      font-weight: bold;
     }
 
-    td{
-        background-color:#007DB8;
-
+    .pending {
+      background-color: orange;
+      color: black;
     }
 
-    @media (max-width: 600px) {
-      h1 {
-        font-size: 22px;
-      }
+    .approved {
+      background-color: green;
+      color: white;
+    }
 
-      th, td {
-        padding: 10px;
-        font-size: 14px;
-      }
-
-      table {
-        font-size: 14px;
-      }
+    .rejected {
+      background-color: red;
+      color: white;
     }
   </style>
 </head>
 <body>
-  <h1>Recharge History</h1>
 
-  <div class="table-container">
-    <table>
-      <thead>
-        <tr>
-          <th>Plan</th>
-          <th>Amount</th>
-          <th>Status</th>
-          <th>Date</th>
-        </tr>
-      </thead>
-      <tbody id="history-body"></tbody>
-    </table>
-  </div>
+  <h1>Recharge History</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>Plan ID</th>
+        <th>Date</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody id="rechargeTableBody">
+      <tr><td colspan="3">Loading...</td></tr>
+    </tbody>
+  </table>
+
+  <!-- Firebase Scripts -->
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
 
   <script>
     const firebaseConfig = {
       apiKey: "AIzaSyBUiCellYmyU-a6ZCh0jo7O2UUe8GAV7s0",
       authDomain: "mercedezbenz79-17037.firebaseapp.com",
+      databaseURL: "https://mercedezbenz79-17037-default-rtdb.firebaseio.com",
       projectId: "mercedezbenz79-17037",
       storageBucket: "mercedezbenz79-17037.appspot.com",
-      messagingSenderId: "875719186280",
-      appId: "1:875719186280:web:9c35bd58b956fc3dd88d99",
+      messagingSenderId: "328685720441",
+      appId: "1:328685720441:web:ae850d085363ee4a1b55a8",
+      measurementId: "G-G2K4V2LZEW"
     };
 
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.firestore();
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
+
     const auth = firebase.auth();
+    const db = firebase.firestore();
 
-    auth.onAuthStateChanged(async (user) => {
-      if (!user) {
-        alert("Please login first");
-        window.location.href = "login.html";
-        return;
-      }
-
-      const userId = user.uid;
-      const tableBody = document.getElementById("history-body");
-
-      try {
-        const snapshot = await db
-          .collection("userPlanRequests")
+    auth.onAuthStateChanged(user => {
+      if (user) {
+        const userId = user.uid;
+        db.collection("userPlanRequests")
           .where("userId", "==", userId)
-          .orderBy("timestamp", "desc")
-          .get();
+          .orderBy("createdAt", "desc")
+          .get()
+          .then(snapshot => {
+            const tableBody = document.getElementById("rechargeTableBody");
+            tableBody.innerHTML = "";
 
-        if (snapshot.empty) {
-          tableBody.innerHTML = "<tr><td colspan='4'>No recharge history found.</td></tr>";
-          return;
-        }
+            if (snapshot.empty) {
+              tableBody.innerHTML = "<tr><td colspan='3'>No plan history found.</td></tr>";
+              return;
+            }
 
-        snapshot.forEach((doc) => {
-          const data = doc.data();
-          const row = document.createElement("tr");
+            snapshot.forEach(doc => {
+              const data = doc.data();
+              const planId = data.planId || "-";
+              const createdAt = data.createdAt?.toDate().toLocaleString() || "-";
+              const status = data.status || "pending";
 
-          const plan = data.planName || data.planId || "N/A";
-          const amount = data.price || data.amount || "N/A";
-          const status = data.status || "pending";
-          const date = data.timestamp?.toDate().toLocaleString() || "N/A";
+              let statusClass = "pending";
+              if (status === "approved") statusClass = "approved";
+              else if (status === "rejected") statusClass = "rejected";
 
-          row.innerHTML = `
-            <td>${plan}</td>
-            <td>${amount}</td>
-            <td>${status}</td>
-            <td>${date}</td>
-          `;
-
-          tableBody.appendChild(row);
-        });
-      } catch (error) {
-        console.error("Error fetching recharge history:", error);
-        tableBody.innerHTML = "<tr><td colspan='4'>Something went wrong.</td></tr>";
+              const row = `
+                <tr>
+                  <td>${planId}</td>
+                  <td>${createdAt}</td>
+                  <td><span class="badge ${statusClass}">${status.toUpperCase()}</span></td>
+                </tr>
+              `;
+              tableBody.innerHTML += row;
+            });
+          })
+          .catch(error => {
+            console.error("Error getting recharge history:", error);
+            document.getElementById("rechargeTableBody").innerHTML = "<tr><td colspan='3'>Error loading data.</td></tr>";
+          });
+      } else {
+        window.location.href = "login.html";
       }
     });
   </script>
