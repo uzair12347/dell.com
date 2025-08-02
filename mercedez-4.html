@@ -3,11 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>MERCEDEZ-4 Payment</title>
+  <title>Dell Lumina</title>
   <style>
     body {
-      background-color: #000;
-      color: #fff;
+      background-color: #ffffff;
+      color: #000000;
       font-family: Arial, sans-serif;
       text-align: center;
       padding: 20px;
@@ -15,11 +15,9 @@
     }
 
     .container {
-      background-color: #111;
-      border: 2px solid #00ffff;
+     background-color:#007DB8;
       padding: 30px;
       border-radius: 12px;
-      box-shadow: 0 0 10px #00ffff;
       width: 100%;
       max-width: 400px;
       margin: auto;
@@ -37,15 +35,12 @@
     }
 
     button {
-      background-color: #00ffff;
+      background-color: #ffffff;
       color: #000;
       font-weight: bold;
       cursor: pointer;
       transition: background-color 0.3s;
-    }
-
-    button:hover {
-      background-color: #00cccc;
+      border: 2px solid black;
     }
 
     @media (max-width: 480px) {
@@ -66,14 +61,14 @@
 </head>
 <body>
   <div class="container">
-    <h2>MERCEDEZ-4 Payment</h2>
-    <p>Amount: Rs. 5000</p>
+    <h2>Dell Lumina</h2>
+    <p>Amount: Rs. 10000</p>
 
     <label for="paymentMethod">Select Payment Method:</label>
     <select id="paymentMethod">
       <option value="">-- Select Method --</option>
-      <option value="easypaisa">EasyPaisa</option>
-      <option value="bank">Meezan Bank</option>
+      <option value="easypaisa">Jazz Cash</option>
+      <option value="bank">Bank</option>
     </select>
 
     <button onclick="proceedToPayment()">Confirm Payment</button>

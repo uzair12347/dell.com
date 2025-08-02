@@ -12,7 +12,7 @@
     }
 
     body {
-      background-color: #000;
+      background-color: #ffffff;
       color: #fff;
       font-family: Arial, sans-serif;
       display: flex;
@@ -24,11 +24,9 @@
     }
 
     .container {
-      background-color: #111;
-      border: 2px solid #00ffff;
+     background-color:#007DB8;     
       padding: 30px;
       border-radius: 12px;
-      box-shadow: 0 0 10px #00ffff;
       width: 100%;
       max-width: 400px;
     }
@@ -53,24 +51,21 @@
       border-radius: 5px;
       border: none;
       width: 100%;
-      background-color: #00ffff;
+      background-color: #fdfdfd;
       color: #000;
       font-weight: bold;
       cursor: pointer;
-    }
-
-    .btn:hover {
-      background-color: #00cccc;
+      border: 2px solid black;
     }
 
     #accountDetails {
       margin-top: 20px;
       font-size: 15px;
-      background: #222;
+      background: #ffffff;
       padding: 12px;
       border-radius: 8px;
       line-height: 1.6;
-      color: #00ff00;
+      color: #000000;
     }
 
     @media (max-width: 480px) {
@@ -92,8 +87,10 @@
   </style>
 
   <!-- ✅ Firebase SDKs -->
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.1/firebase-firestore.js"></script>
+
 </head>
 <body>
   <div class="container">
@@ -105,6 +102,9 @@
   </div>
 
   <script>
+
+    let currentUser = null;
+
     // ✅ Firebase Init
     const firebaseConfig = {
       apiKey: "AIzaSyBUiCellYmyU-a6ZCh0jo7O2UUe8GAV7s0",
@@ -124,7 +124,7 @@
 
     if (method === "easypaisa") {
       accountDetailsDiv.innerHTML = `
-        <strong>EasyPaisa Account:</strong><br>
+        <strong>Jazz Cash:</strong><br>
         0332-0217021<br>
         Name: Asma
       `;
@@ -138,6 +138,16 @@
       accountDetailsDiv.innerHTML = `<span style="color:red;">Unknown payment method selected.</span>`;
     }
 
+    firebase.auth().onAuthStateChanged((user) => {
+  if (user) {
+    currentUser = user;
+  } else {
+    alert("Please login first.");
+    window.location.href = "login.html";
+  }
+});
+
+
     async function submitDetails() {
       const transactionId = document.getElementById("transactionId").value.trim();
 
@@ -146,16 +156,74 @@
         return;
       }
 
-      try {
+       if (!currentUser) {
+    alert("User not logged in.");
+    return;
+  }
+
+     
+        let planTitle = "Unknown Plan";
+    let price = 0;
+    let dailyIncome = 0;
+
+    const planDoc = await db.collection("plans").doc(planId).get();
+    if (planDoc.exists) {
+      const planData = planDoc.data();
+      planTitle = planData.planTitle || planData.title || "Plan";
+      price = planData.price || 0;
+      dailyIncome = planData.dailyIncome || 0;
+    }
+
+     try {
         await db.collection("userPlanRequests").add({
           transactionId,
           method,
           planId,
+          price,        
+          dailyIncome,   
           status: "pending",
+          userId: currentUser.uid,
           createdAt: firebase.firestore.Timestamp.now()
         });
 
-        alert("✅ Your order has been submitted successfully!\nOur team will review and approve it shortly.");
+        // 🔓 Unlock inviter's withdraw if applicable
+const userRef = db.collection("users").doc(currentUser.uid);
+const userSnap = await userRef.get();
+
+if (userSnap.exists) {
+  const userData = userSnap.data();
+
+  if (userData?.invitedBy) {
+    const inviterQuery = await db.collection("users")
+      .where("referralCode", "==", userData.invitedBy)
+      .limit(1)
+      .get();
+
+    if (!inviterQuery.empty) {
+      const inviterDoc = inviterQuery.docs[0];
+      const inviterRef = inviterDoc.ref;
+      const inviterData = inviterDoc.data();
+
+      if (!inviterData.withdrawUnlocked) {
+        await inviterRef.update({ withdrawUnlocked: true });
+      }
+    }
+  }
+}
+
+
+    const boughtPlan = {
+      title: planTitle,
+      price: price,
+      dailyIncome: dailyIncome,
+      date: new Date().toISOString()
+    };
+
+    let existingPlans = JSON.parse(localStorage.getItem("myPlans")) || [];
+    existingPlans.push(boughtPlan);
+    localStorage.setItem("myPlans", JSON.stringify(existingPlans));
+
+        alert("Your recharge request has been submitted successfully. Please wait for admin approval.");
         localStorage.removeItem("selectedPlanId");
         localStorage.removeItem("selectedPaymentMethod");
         window.location.href = "more.html";

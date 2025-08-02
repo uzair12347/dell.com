@@ -3,10 +3,10 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MERCEDEZ-2 Payment</title>
+  <title>Dell AeroX</title>
   <style>
     body {
-      background-color: #000;
+      background-color: #ffffff;
       color: #fff;
       font-family: Arial, sans-serif;
       text-align: center;
@@ -15,11 +15,9 @@
     }
 
     .container {
-      background-color: #111;
-      border: 2px solid #00ffff;
+     background-color:#007DB8;
       padding: 30px;
       border-radius: 12px;
-      box-shadow: 0 0 10px #00ffff;
       width: 100%;
       max-width: 400px;
       margin: auto;
@@ -36,15 +34,12 @@
     }
 
     button {
-      background-color: #00ffff;
+      background-color: #ffffff;
       color: #000;
       font-weight: bold;
       cursor: pointer;
       transition: background-color 0.3s;
-    }
-
-    button:hover {
-      background-color: #00cccc;
+      border: 2px solid black;
     }
 
     @media (max-width: 500px) {
@@ -65,28 +60,32 @@
 </head>
 <body>
   <div class="container">
-    <h2>MERCEDEZ-2 Payment</h2>
-    <p>Amount: Rs. 1000</p>
+    <h2>Dell AeroX</h2>
+    <p>Amount: Rs. 3000</p>
 
     <label for="paymentMethod">Select Payment Method:</label>
     <select id="paymentMethod">
       <option value="">-- Select Method --</option>
-      <option value="easypaisa">EasyPaisa</option>
-      <option value="bank">Meezan Bank</option>
+      <option value="easypaisa">Jazz Cash</option>
+      <option value="bank">Bank</option>
     </select>
 
     <button onclick="proceedToPayment()">Confirm Payment</button>
   </div>
 
   <script>
-    const firebaseConfig = {
-      apiKey: "AIzaSy***********", // replace with actual value
-      authDomain: "mercedezbenz79-17037.firebaseapp.com",
-      projectId: "mercedezbenz79-17037",
-      storageBucket: "mercedezbenz79-17037.appspot.com",
-      messagingSenderId: "YOUR_SENDER_ID",
-      appId: "YOUR_APP_ID"
-    };
+    // For Firebase JS SDK v7.20.0 and later, measurementId is optional
+const firebaseConfig = {
+  apiKey: "AIzaSyBUiCellYmyU-a6ZCh0jo7O2UUe8GAV7s0",
+  authDomain: "mercedezbenz79-17037.firebaseapp.com",
+  databaseURL: "https://mercedezbenz79-17037-default-rtdb.firebaseio.com",
+  projectId: "mercedezbenz79-17037",
+  storageBucket: "mercedezbenz79-17037.firebasestorage.app",
+  messagingSenderId: "328685720441",
+  appId: "1:328685720441:web:ae850d085363ee4a1b55a8",
+  measurementId: "G-G2K4V2LZEW"
+};
+
     firebase.initializeApp(firebaseConfig);
     const db = firebase.firestore();
 
@@ -100,7 +99,7 @@
       localStorage.setItem("selectedPaymentMethod", method);
       localStorage.setItem("selectedPlanId", "MERCEDEZ-2");
 
-      window.location.href = "payment2.html";
+  window.location.href = `payment2.html?planName=MERCEDEZ-2&method=${method}&planId=MERCEDEZ-2`;
     }
   </script>
 </body>

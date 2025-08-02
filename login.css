@@ -1,5 +1,6 @@
 body {
-  background-image: url("mercedes-benz-slr-mclaren-stirling-moss--photo-credit-rm-sothebys_100873170_h.jpg");
+  background-image: url("il_fullxfull.3707572637_dsns.webp");
+  background-color: white;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
@@ -14,10 +15,9 @@ body {
 }
 
 .container {
-  background-color: #111;
+   background-color:#007DB8;
   padding: 30px;
   border-radius: 10px;
-  border: 2px solid #00ffff;
   width: 100%;
   max-width: 360px;
   text-align: center;
@@ -36,8 +36,8 @@ body {
 }
 
 .input-group .prefix {
-  background-color: #333;
-  color: #00ffff;
+  background-color: #ffffff;
+  color: #000000;
   padding: 10px;
   border: none;
   border-radius: 5px 0 0 5px;

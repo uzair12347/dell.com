@@ -1,8 +1,8 @@
 body {
   margin: 0;
-  background-color: #0f0f0f;
+  background-color: #ffffff;
   font-family: Arial, sans-serif;
-  color: #ffffff;
+  color: #111111;
 }
 
 /* Slider Styles */
@@ -36,12 +36,12 @@ body {
 
 /* Plan Card */
 .plan-card {
-  background-color: #1a1a1a;
+  background-color:#007DB8;
   color: #ffffff;
-  border: 2px solid #00ffff;
+  /* border: 2px solid #00ffff; */
   padding: 10px;
   border-radius: 10px;
-  box-shadow: 0 0 12px #00FFFF;
+  /* box-shadow: 0 0 12px #00FFFF; */
   text-align: center;
 }
 
@@ -54,7 +54,7 @@ body {
 }
 
 .plan-card h3 {
-  color: #00ffff;
+  color: #ffffff;
   margin: 10px 0 5px;
   font-size: 16px;
 }
@@ -68,11 +68,13 @@ body {
   display: inline-block;
   margin-top: 8px;
   text-decoration: none;
-  background: #00ffff;
-  color: #000;
+  background-color: #ffffff;
+ color: #000000;
   padding: 6px 12px;
   border-radius: 5px;
   font-size: 14px;
+  font-weight: bold;
+  border: 2px solid black;
 }
 
 /* Bottom Navigation */
@@ -80,7 +82,7 @@ body {
   position: fixed;
   bottom: 0;
   width: 100%;
-  background-color: #000;
+  background-color:#007DB8;
   display: flex;
   justify-content: space-around;
   border-top: 1px solid #ccc;
@@ -101,6 +103,7 @@ body {
   display: block;
   margin: 0 auto 3px;
 }
+
 
 /* Slider animation */
 @keyframes slide {

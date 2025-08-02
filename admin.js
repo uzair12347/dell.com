@@ -78,6 +78,8 @@ async function approvePlan(planId) {
 //   return;
 // }
 let userPhone = "unknown";
+    let invitedBy = null;
+
 
      
     if (uid) {
@@ -86,24 +88,63 @@ let userPhone = "unknown";
       if (userSnap.exists) {
         const userData = userSnap.data();
         userPhone = userData.phone || "unknown";
+          invitedBy = userData.invitedBy || null;
+
       }
     }
 
     // 1. Update status in userPlanRequests
     await planRef.update({ status: "approved" });
 
+    await planRef.update({
+  dailyIncome: planData.dailyIncome ?? 0,
+  planDurationInDays: planData.planDurationInDays ?? 60,
+  completedDays: 0,
+  nextEarningAt: firebase.firestore.Timestamp.fromDate(
+    new Date(Date.now() + 24 * 60 * 60 * 1000)
+  )
+});
+
    
     // 2. Add to approvedPlans collection
     await db.collection("approvedPlans").doc(planId).set({
       ...planData,
        userPhone:userPhone,
-      transactionId: planData.transactionId,
-       method: planData.method,
-      planName: planData.planName, // <-- This must exist, no "N/A"
+      transactionId: planData.transactionId || 0,
+       dailyIncome: planData.dailyIncome ?? 0,
+       completedDays: 0,
+       method: planData.method || "N/A",
+      planName: planData.planName || "N/A", // <-- This must exist, no "N/A"
       status: "approved",
-      userId: uid,
-      approvedAt: new Date().toISOString(),
+      uid: uid,
+      approvedAt: firebase.firestore.FieldValue.serverTimestamp(),
+      nextEarningAt: firebase.firestore.Timestamp.fromDate(
+          new Date(Date.now() + 24 * 60 * 60 * 1000) // 24 ghante baad ka waqt
+      )
     });
+
+     let commissionRates = [0.25, 0.15, 0.10]; // Level 1, 2, 3
+    let currentRef = invitedBy;
+    let level = 0;
+
+    while (currentRef && level < 3) {
+      const refSnap = await db.collection("users").doc(currentRef).get();
+      if (!refSnap.exists) break;
+
+      const refData = refSnap.data();
+      const amount = parseFloat(planData.amount) || 0;
+      const commission = amount * commissionRates[level];
+
+      await db.collection("users").doc(currentRef).update({
+        accountBalance: firebase.firestore.FieldValue.increment(commission),
+        totalCommission: firebase.firestore.FieldValue.increment(commission)
+      });
+
+      // move up the chain
+      currentRef = refData.invitedBy || null;
+      level++;
+    }
+
 
     alert("Plan approved and added to approvedPlans");
     fetchPendingPlans();

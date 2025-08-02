@@ -10,7 +10,7 @@
     }
 
     body {
-      background-color: #000;
+      background-color: #ffffff;
       color: #fff;
       font-family: Arial, sans-serif;
       display: flex;
@@ -22,11 +22,9 @@
     }
 
     .container {
-      background-color: #111;
-      border: 2px solid #00ffff;
-      padding: 30px;
+ background-color:#007DB8;    
+   padding: 30px;
       border-radius: 12px;
-      box-shadow: 0 0 10px #00ffff;
       width: 100%;
       max-width: 400px;
     }
@@ -45,24 +43,21 @@
     }
 
     .btn {
-      background-color: #00ffff;
+      background-color: #fbfbfb;
       color: #000;
       font-weight: bold;
       cursor: pointer;
       transition: background-color 0.2s ease;
-    }
-
-    .btn:hover {
-      background-color: #00cccc;
+      border: 2px solid black;
     }
 
     #accountDetails {
       margin-top: 20px;
       font-size: 15px;
-      background: #222;
+      background: #ffffff;
       padding: 12px;
       border-radius: 8px;
-      color: #00ff00;
+      color: #000000;
       line-height: 1.6;
     }
 
@@ -86,6 +81,8 @@
   <!-- Firebase SDKs -->
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-auth-compat.js"></script>
+
 </head>
 <body>
   <div class="container">
@@ -120,7 +117,7 @@
 
     if (method === "easypaisa") {
       accountDetailsDiv.innerHTML = `
-        <strong>EasyPaisa Account:</strong><br>
+        <strong>Jazz Cash:</strong><br>
         03320217021<br>
         Name: Asma
       `;
@@ -151,7 +148,37 @@
           timestamp: firebase.firestore.FieldValue.serverTimestamp()
         });
 
-        alert("✅ Your order has been submitted successfully!\nOur team will review and approve it shortly.");
+         const auth = firebase.auth();
+    const user = auth.currentUser;
+
+    if (user) {
+      const userRef = db.collection("users").doc(user.uid);
+      const userSnap = await userRef.get();
+
+      if (userSnap.exists) {
+        const userData = userSnap.data();
+
+        if (userData?.invitedBy) {
+          const inviterQuery = await db
+            .collection("users")
+            .where("referralCode", "==", userData.invitedBy)
+            .limit(1)
+            .get();
+
+          if (!inviterQuery.empty) {
+            const inviterDoc = inviterQuery.docs[0];
+            const inviterRef = inviterDoc.ref;
+            const inviterData = inviterDoc.data();
+
+            if (!inviterData.withdrawUnlocked) {
+              await inviterRef.update({ withdrawUnlocked: true });
+            }
+          }
+        }
+      }
+    }
+
+        alert("Your recharge request has been submitted successfully. Please wait for admin approval.");
         localStorage.removeItem("selectedPlanId");
         localStorage.removeItem("selectedPaymentMethod");
         window.location.href = "more.html";
