@@ -5,103 +5,114 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>My Page</title>
   <style>
+    :root {
+      --primary: #007DB8;
+      --accent: #00c6ff;
+      --text: #333;
+      --bg: #f7f9fc;
+    }
+
     body {
       margin: 0;
       padding-bottom: 80px;
-      font-family: sans-serif;
-      text-align: center;
-      background-color: #ffffff;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
     }
 
-    h2, h3 {
-      margin-top: 20px;
-      color: rgb(0, 0, 0);
+    .balance-card {
+      background: white;
+      padding: 20px;
+      margin: 20px auto 10px;
+      border-radius: 16px;
+      max-width: 90%;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      text-align: center;
+    }
+
+    .balance-card h2 {
+      margin-bottom: 10px;
+      font-size: 1.2rem;
     }
 
     #balance {
+      font-size: 2rem;
       font-weight: bold;
-      color: #000000;
-      font-size: 1.8em;
+      color: var(--primary);
     }
 
     #registeredNumber {
-      font-size:35px;
-      color: rgb(0, 0, 0);
-      margin-top: 5px;
+      font-size: 1.1rem;
+      color: #555;
+      margin-top: 6px;
     }
 
     .menu-column {
-      margin-top: 30px;
       display: flex;
       flex-direction: column;
-      align-items: center;
-      gap: 15px;
+      gap: 12px;
+      margin: 20px auto;
       padding: 0 5%;
-      
+      max-width: 500px;
     }
 
     .menu-column button {
-      width: 100%;
-      padding: 12px;
-      font-size: 16px;
-      font-weight: bold;
-      background-color:#007DB8;
-     
+      padding: 14px;
+      font-size: 15px;
+      font-weight: 600;
+      background: var(--primary);
       color: white;
-      border-radius: 8px;
+      border: none;
+      border-radius: 10px;
       cursor: pointer;
-      transition: background 0.3s;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s ease;
     }
 
-    /* .menu-column button:hover {
-      background-color: #000000;
-      color: #ffffff;
-    } */
+    .menu-column button:hover {
+      background-color: #005c8f;
+    }
 
     .bottom-nav {
       position: fixed;
       bottom: 0;
-      left: 0;
       width: 100%;
-      background-color:#007DB8;
+      background-color: var(--primary);
       display: flex;
       justify-content: space-around;
       padding: 10px 0;
-      box-shadow: 0 -1px 5px rgba(0, 0, 0, 0.3);
-      z-index: 1000;
-    }
-
-    .bottom-nav img {
-      width: 24px;
-      height: 24px;
-      display: block;
-      margin: 0 auto 2px;
-      filter: drop-shadow(0 0 3px #00ffcc);
+      border-top: 1px solid #ccc;
+      z-index: 999;
     }
 
     .bottom-nav a {
       color: white;
       text-decoration: none;
-      font-size: 13px;
-      font-weight: bold;
+      font-size: 12px;
       display: flex;
       flex-direction: column;
       align-items: center;
     }
 
-    .bottom-nav a:hover {
-      color: #00ffcc;
+    .bottom-nav img {
+      width: 24px;
+      height: 24px;
+      margin-bottom: 4px;
+      filter: drop-shadow(0 0 2px #00ffcc);
     }
 
-    /* Mobile responsiveness */
+    .bottom-nav a:hover {
+      color: var(--accent);
+    }
+
     @media (max-width: 480px) {
       #balance {
-        font-size: 1.5em;
+        font-size: 1.6rem;
       }
 
       .menu-column button {
+        padding: 12px;
         font-size: 14px;
-        padding: 10px;
       }
 
       .bottom-nav img {
@@ -110,16 +121,21 @@
       }
 
       .bottom-nav a {
-        font-size: 12px;
+        font-size: 11px;
       }
     }
   </style>
 </head>
 <body>
 
-  <h2>Your Balance: Rs <span id="balance">0</span></h2>
-  <div id="registeredNumber">Loading...</div>
+  <!-- Balance Display -->
+  <div class="balance-card">
+    <h2>Your Balance</h2>
+    <div id="balance">0</div>
+    <div id="registeredNumber">Loading...</div>
+  </div>
 
+  <!-- Action Buttons -->
   <div class="menu-column">
     <button onclick="location.href='withdraw.html'">Withdraw</button>
     <button onclick="location.href='team.html'">Invite Friends</button>
@@ -135,7 +151,7 @@
     <a href="more.html"><img src="OIP (4).jpeg" alt="Home" /><span>Home</span></a>
     <a href="earning.html"><img src="OIP (5).jpeg" alt="Earning" /><span>Earning</span></a>
     <a href="team.html"><img src="OIP (6).jpeg" alt="Team" /><span>Team</span></a>
-    <a href="mypage.html" class="active"><img src="OIP (7).jpeg" alt="My Page" /><span>My</span></a>
+    <a href="mypage.html"><img src="OIP (7).jpeg" alt="My Page" /><span>My</span></a>
   </div>
 
   <!-- Firebase JS SDK -->
@@ -143,8 +159,8 @@
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-auth-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
 
+  <!-- Firebase Logic -->
   <script>
-    // Firebase config
     const firebaseConfig = {
       apiKey: "AIzaSyBUiCellYmyU-a6ZCh0jo7O2UUe8GAV7s0",
       authDomain: "mercedezbenz79-17037.firebaseapp.com",
@@ -186,5 +202,6 @@
       }
     });
   </script>
+
 </body>
 </html>
