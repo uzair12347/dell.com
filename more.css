@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 /* --- General Styles --- */
 body {
     margin: 0;
@@ -19,29 +20,66 @@ body {
 }
 
 .slide {
+=======
+
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background-color: #f4f4f4;
+    color: #333;
+  }
+
+  .slider-wrapper {
+    width: 100%;
+    overflow: hidden;
+    margin-bottom: 20px;
+  }
+
+  .slider-touch {
+    display: flex;
+    animation: slide 20s infinite linear;
+  }
+
+  .slide {
+>>>>>>> 8d4a9a5b40255018c505731ad27e9a56642d3c28
     width: 100%;
     max-height: 200px;
     object-fit: cover;
     flex-shrink: 0;
     border-radius: 8px;
+<<<<<<< HEAD
 }
 
 @keyframes slide {
+=======
+  }
+
+  @keyframes slide {
+>>>>>>> 8d4a9a5b40255018c505731ad27e9a56642d3c28
     0%, 10% { transform: translateX(0); }
     20%, 30% { transform: translateX(-100%); }
     40%, 50% { transform: translateX(-200%); }
     60%, 70% { transform: translateX(-300%); }
     80%, 90% { transform: translateX(0); }
+<<<<<<< HEAD
 }
 
 /* --- Plan Section --- */
 .plan-container {
     display: flex;             
     flex-direction: column;    /* Cards vertically stacked */
+=======
+  }
+
+  .plan-container {
+    display: grid;
+   grid-template-columns: repeat(2, 1fr); /* Always 2 columns */
+>>>>>>> 8d4a9a5b40255018c505731ad27e9a56642d3c28
     gap: 16px;
     padding: 0 16px 80px;
     max-width: 1000px;
     margin: 0 auto;
+<<<<<<< HEAD
 }
 
 .plan-card {
@@ -95,11 +133,53 @@ body {
     display: inline-block;
     margin-top: 10px;
     padding: 8px 100px;
+=======
+  }
+
+  .plan-card {
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    padding: 16px;
+    text-align: center;
+    transition: transform 0.2s ease;
+  }
+
+  .plan-card:hover {
+    transform: translateY(-4px);
+  }
+
+  .plan-card img {
+    width: 100%;
+    height: 150px;
+    object-fit: contain;
+    margin-bottom: 12px;
+    border-radius: 8px;
+  }
+
+  .plan-card h3 {
+    font-size: 18px;
+    margin-bottom: 8px;
+    color: #007DB8;
+  }
+
+  .plan-card p {
+    margin: 4px 0;
+    font-size: 14px;
+    font-weight: bold;
+  }
+
+  .plan-card a {
+    display: inline-block;
+    margin-top: 10px;
+    padding: 8px 16px;
+>>>>>>> 8d4a9a5b40255018c505731ad27e9a56642d3c28
     background-color: #007DB8;
     color: #fff;
     border-radius: 6px;
     text-decoration: none;
     transition: background-color 0.3s ease;
+<<<<<<< HEAD
     align-self: flex-start;    /* Button left aligned */
 }
 
@@ -109,6 +189,15 @@ body {
 
 /* --- Bottom Navigation --- */
 .bottom-nav {
+=======
+  }
+
+  .plan-card a:hover {
+    background-color: #005c8f;
+  }
+
+  .bottom-nav {
+>>>>>>> 8d4a9a5b40255018c505731ad27e9a56642d3c28
     position: fixed;
     bottom: 0;
     width: 100%;
@@ -119,15 +208,22 @@ body {
     padding: 8px 0;
     border-top: 1px solid #ccc;
     z-index: 1000;
+<<<<<<< HEAD
 }
 
 .bottom-nav a {
+=======
+  }
+
+  .bottom-nav a {
+>>>>>>> 8d4a9a5b40255018c505731ad27e9a56642d3c28
     color: white;
     text-decoration: none;
     font-size: 13px;
     display: flex;
     flex-direction: column;
     align-items: center;
+<<<<<<< HEAD
     
 }
 
@@ -136,3 +232,14 @@ body {
     height: 24px;
     margin-bottom: 2px;
 }
+=======
+  }
+
+  .bottom-nav img {
+    width: 24px;
+    height: 24px;
+    margin-bottom: 2px;
+  }
+
+ 
+>>>>>>> 8d4a9a5b40255018c505731ad27e9a56642d3c28
