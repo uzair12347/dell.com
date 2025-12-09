@@ -36,7 +36,7 @@ const firebaseConfig = {
         let html = "";
         snapshot.forEach(doc => {
           const plan = doc.data();
-          if (plan.status !== "pending") return;
+if (plan.status !== "pending" && plan.status !== "approved") return;
 
           html += `
             <div class="plan-card">

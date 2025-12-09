@@ -21,7 +21,7 @@
 
     body {
       font-family: Arial, sans-serif;
-      background-color: white;
+      background-color: #007DB8;
       color: var(--dell-white);
       text-align: center;
       padding: 20px;
@@ -62,13 +62,17 @@
       padding: 15px;
       margin: 10px;
       border-radius: 10px;
- background-color:#007DB8;    
+ background-color:#00c6ff;    
 }
   </style>
 </head>
 <body>
 
   <div id="earningPlans"></div>
+  <div class="plan-card">
+  <h3>No More Data</h3>
+  <p>You currently have no active earning plans.</p>
+</div>
 
   <div class="bottom-nav">
     <a href="more.html"><img src="OIP (4).jpeg" alt="Home" /><span>Home</span></a>
@@ -110,7 +114,11 @@
         .get();
 
       if (querySnapshot.empty) {
-        earningPlansDiv.innerHTML = "No active plans found.";
+        earningPlansDiv.innerHTML =
+        <div class="plan-card">
+      <h3>No More Data</h3>
+      <p>You currently have no active earning plans.</p>
+    </div>;
         return;
       }
 

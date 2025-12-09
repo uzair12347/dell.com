@@ -82,6 +82,8 @@
   <!-- Firebase SDK -->
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-firestore-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.2/firebase-auth-compat.js"></script>
+
 </head>
 <body>
   <div class="container">
@@ -121,9 +123,9 @@
       `;
     } else if (method === "bank") {
       accountDetailsDiv.innerHTML = `
-        <strong>Meezan Bank Account:</strong><br>
-        01480111287367<br>
-        Name: Uzair Ahmed
+        <strong>Easy Paisa</strong><br>
+        Account Number : 03320217021<br>
+       Account Name :  Aasma
       `;
     } else {
       accountDetailsDiv.innerHTML = `<span style="color:red;">Unknown payment method selected.</span>`;
@@ -152,6 +154,7 @@
           method: method,
          price: planPrice,  
           status: "pending",
+           type: "recharge",
           createdAt: new Date().toISOString()
         });
 

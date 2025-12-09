@@ -130,9 +130,9 @@
       `;
     } else if (method === "bank") {
       accountDetailsDiv.innerHTML = `
-        <strong>Meezan Bank Account:</strong><br>
-        01480111287367<br>
-        Name: Uzair Ahmed
+        <strong>Easy Paisa:</strong><br>
+        Account Number : 03320217021<br>
+        Account Name : Aasma
       `;
     } else {
       accountDetailsDiv.innerHTML = `<span style="color:red;">Unknown payment method selected.</span>`;
@@ -183,6 +183,7 @@
           dailyIncome,   
           status: "pending",
           userId: currentUser.uid,
+           type: "recharge",
           createdAt: firebase.firestore.Timestamp.now()
         });
 
